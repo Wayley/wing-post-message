@@ -1,0 +1,38 @@
+{
+  "name": "wing-post-message",
+  "version": "0.0.1",
+  "description": "a tool for `window.postMessage` api",
+  "main": "dist/wing-post-message.es.js",
+  "module": "dist/wing-post-message.es.js",
+  "unpkg": "dist/wing-post-message.js",
+  "files": [
+    "dist",
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup --config"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wayley/wing-post-message.git"
+  },
+  "keywords": [
+    "postmessage",
+    "window"
+  ],
+  "author": {
+    "name": "Robben Wayley",
+    "email": "hb_wangzheng@163.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wayley/wing-post-message/issues"
+  },
+  "homepage": "https://github.com/Wayley/wing-post-message#readme",
+  "dependencies": {
+    "rollup": "^2.27.0",
+    "rollup-plugin-terser": "^7.0.2"
+  }
+}
