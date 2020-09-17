@@ -4,7 +4,7 @@ export const sendMessage = function (message, targetOrigin) {
   let _window = window.open(targetOrigin, "_blank");
   let _message = JSON.stringify(message);
   setTimeout(() => {
-    _window.postMessage(_message, origin);
+    _window.postMessage(_message, targetOrigin);
   }, TIMEOUT);
 };
 export const dispatchEvent = function (origin, callback) {

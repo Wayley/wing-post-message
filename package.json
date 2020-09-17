@@ -1,6 +1,6 @@
 {
   "name": "wing-post-message",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "a tool for `window.postMessage` api",
   "main": "dist/wing-post-message.es.js",
   "module": "dist/wing-post-message.es.js",
