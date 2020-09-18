@@ -16,7 +16,29 @@ export const dispatchEvent = function (origin, callback) {
     }
   }
 };
+
+export const sendMessageWithPolling = function ({
+  message,
+  targetOrigin,
+  max = 10,
+  timeout = TIMEOUT,
+}) {
+  let _window = window.open(targetOrigin, "_blank");
+  let i = 0;
+  setTimeout(() => {
+    _window.postMessage(message, targetOrigin);
+  }, timeout);
+  let timer = setInterval(() => {
+    if (i > max) {
+      clearInterval(timer);
+      return;
+    }
+    i++;
+    _window.postMessage(message, targetOrigin);
+  }, timeout);
+};
 export default {
   sendMessage,
   dispatchEvent,
+  sendMessageWithPolling,
 };
