@@ -7,11 +7,11 @@ export const sendMessage = function (message, targetOrigin) {
     _window.postMessage(_message, targetOrigin);
   }, TIMEOUT);
 };
-export const dispatchEvent = function (origin, callback) {
+export const dispatchEvent = function (licensedOrigin, callback) {
   window.addEventListener("message", receiveMessage, false);
   function receiveMessage(event) {
-    var _origin = event.origin || event.originalEvent.origin;
-    if (_origin == origin) {
+    var origin = event.origin || event.originalEvent.origin;
+    if (licensedOrigin == origin || licensedOrigin.indexOf(origin) > -1) {
       callback(event);
     }
   }
@@ -21,13 +21,10 @@ export const sendMessageWithPolling = function ({
   message,
   targetOrigin,
   max = 10,
-  timeout = TIMEOUT,
+  interval = TIMEOUT,
 }) {
   let _window = window.open(targetOrigin, "_blank");
   let i = 0;
-  setTimeout(() => {
-    _window.postMessage(message, targetOrigin);
-  }, timeout);
   let timer = setInterval(() => {
     if (i > max) {
       clearInterval(timer);
@@ -35,7 +32,7 @@ export const sendMessageWithPolling = function ({
     }
     i++;
     _window.postMessage(message, targetOrigin);
-  }, timeout);
+  }, interval);
 };
 export default {
   sendMessage,
