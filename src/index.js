@@ -1,20 +1,14 @@
 const TIMEOUT = 1000;
 
-export const sendMessage = function (message, targetOrigin) {
+export const sendMessage = function ({
+  message,
+  targetOrigin,
+  timeout = TIMEOUT,
+}) {
   let _window = window.open(targetOrigin, "_blank");
-  let _message = JSON.stringify(message);
   setTimeout(() => {
-    _window.postMessage(_message, targetOrigin);
-  }, TIMEOUT);
-};
-export const dispatchEvent = function (licensedOrigin, callback) {
-  window.addEventListener("message", receiveMessage, false);
-  function receiveMessage(event) {
-    var origin = event.origin || event.originalEvent.origin;
-    if (licensedOrigin == origin || licensedOrigin.indexOf(origin) > -1) {
-      callback(event);
-    }
-  }
+    _window.postMessage(message, targetOrigin);
+  }, timeout);
 };
 
 export const sendMessageWithPolling = function ({
@@ -24,7 +18,7 @@ export const sendMessageWithPolling = function ({
   interval = TIMEOUT,
 }) {
   let _window = window.open(targetOrigin, "_blank");
-  let i = 0;
+  let i = 1;
   let timer = setInterval(() => {
     if (i > max) {
       clearInterval(timer);
@@ -33,6 +27,16 @@ export const sendMessageWithPolling = function ({
     i++;
     _window.postMessage(message, targetOrigin);
   }, interval);
+};
+
+export const dispatchEvent = function (licensedOrigin, callback) {
+  window.addEventListener("message", receiveMessage, false);
+  function receiveMessage(event) {
+    var origin = event.origin || event.originalEvent.origin;
+    if (licensedOrigin == origin || licensedOrigin.indexOf(origin) > -1) {
+      callback(event);
+    }
+  }
 };
 export default {
   sendMessage,
