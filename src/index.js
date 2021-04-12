@@ -1,4 +1,4 @@
-const TIMEOUT = 1000;
+const TIMEOUT = 1100;
 
 export const sendMessage = function ({
   message,
