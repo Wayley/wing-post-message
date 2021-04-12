@@ -40,18 +40,18 @@ export const dispatchEvent = function (
     try {
       const type = typeof licensedOrigin;
       if (type == "string" && licensedOrigin == origin) {
-        callback(event);
+        callback && callback(event);
       } else if (
         type == "object" &&
         Array.isArray(licensedOrigin) &&
         licensedOrigin.indexOf(origin) > -1
       ) {
-        callback(event);
+        callback && callback(event);
       } else {
-        errorCallback(new Error("parameter error"));
+        errorCallback && errorCallback(new Error("Parameter error"));
       }
     } catch (error) {
-      errorCallback(error);
+      errorCallback && errorCallback(error);
     }
   }
 };
