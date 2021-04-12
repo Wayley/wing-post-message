@@ -29,12 +29,29 @@ export const sendMessageWithPolling = function ({
   }, interval);
 };
 
-export const dispatchEvent = function (licensedOrigin, callback) {
+export const dispatchEvent = function (
+  licensedOrigin,
+  callback,
+  errorCallback
+) {
   window.addEventListener("message", receiveMessage, false);
   function receiveMessage(event) {
     var origin = event.origin || event.originalEvent.origin;
-    if (licensedOrigin == origin || licensedOrigin.indexOf(origin) > -1) {
-      callback(event);
+    try {
+      const type = typeof licensedOrigin;
+      if (type == "string" && licensedOrigin == origin) {
+        callback(event);
+      } else if (
+        type == "object" &&
+        Array.isArray(licensedOrigin) &&
+        licensedOrigin.indexOf(origin) > -1
+      ) {
+        callback(event);
+      } else {
+        errorCallback(new Error("parameter error"));
+      }
+    } catch (error) {
+      errorCallback(error);
     }
   }
 };
