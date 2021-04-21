@@ -35,33 +35,28 @@ export const sendMessageWithPolling = function ({
 function WingPostMessage(options) {
   this.options = Object.assign(
     {
-      interval: 1500, // 轮询间隔
-      maxPolls: 10, // 最多轮询次数(达到轮询次数之后无论是否收到信息都将终止发送)
+      interval: 1100, // 轮询间隔
+      maxPolls: 100, // 最多轮询次数(达到轮询次数之后无论是否收到信息都将终止发送)
     },
     options
   );
 }
 WingPostMessage.prototype.sendMessage = function ({
+  targetPage,
   message,
-  targetOpeningUrl,
   targetOrigin,
 }) {
-  let _window = window.open(targetOpeningUrl, "_blank");
-  const { interval, maxPolls } = this.options;
-  let i = 1;
-  // 轮询发送信息
+  let popup = window.open(targetPage, "_blank");
+  const { interval } = this.options;
   let timer = setInterval(() => {
-    if (i > maxPolls) {
-      clearInterval(timer);
-      return;
-    }
-    i++;
-    _window.postMessage(message, targetOrigin);
+    popup.postMessage(message, targetOrigin);
   }, interval);
-  // 收到回复后终止轮询
-  this.dispatchEvent(targetOrigin, () => {
+
+  function receiveMessage(event) {
+    if (event.origin !== targetOrigin) return;
     clearInterval(timer);
-  });
+  }
+  window.addEventListener("message", receiveMessage, false);
 };
 WingPostMessage.prototype.dispatchEvent = function (licensedOrigin, callback) {
   window.addEventListener("message", receiveMessage, false);
