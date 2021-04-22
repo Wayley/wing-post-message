@@ -51,12 +51,9 @@ WingPostMessage.prototype.sendMessage = function ({
   let timer = setInterval(() => {
     popup.postMessage(message, targetOrigin);
   }, interval);
-
-  function receiveMessage(event) {
-    if (event.origin !== targetOrigin) return;
+  this.dispatchEvent([targetOrigin], (event) => {
     clearInterval(timer);
-  }
-  window.addEventListener("message", receiveMessage, false);
+  });
 };
 WingPostMessage.prototype.dispatchEvent = function (licensedOrigin, callback) {
   window.addEventListener("message", receiveMessage, false);
